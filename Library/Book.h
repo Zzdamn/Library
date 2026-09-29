@@ -20,4 +20,4 @@ public:
     void print();
     bool verifyIsbn();
 };
-#endif//
+#endif
