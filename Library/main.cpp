@@ -26,7 +26,7 @@ int main()
     e1->initEBook("Data Structures (eBook)", "3001", "Higher Education Press", 20, 10, 15.6, "PDF");
     lib.addResource(e1);
 
-    // ===== 实验四 多态效果演示 =====
+    // ===== 多态效果演示 =====
     cout << "===== Polymorphism Demo =====" << endl;
     // 1. 基类指针调用虚函数
     Book* ptr = b1;
