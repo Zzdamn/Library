@@ -1,7 +1,7 @@
 #pragma execution_character_set("utf-8")
 #include "Book.h"
 
-// ========== 基类Book实现（原有业务逻辑全部保留）==========
+// *******************基类Book实现*******************
 Book::Book() : totalCount(0), availableCount(0) {}
 
 Book::~Book() {}
@@ -60,14 +60,14 @@ void Book::printBaseInfo() const {
     std::cout << "Total copies: " << totalCount << ", Available: " << availableCount << std::endl;
 }
 
-// ===== 实验四新增：运算符重载（基类引用调用虚函数，运行时多态）=====
+// *******************实验四：运算符重载（基类引用调用虚函数，运行时多态）*******************
 std::ostream& operator<<(std::ostream& os, const Book& book)
 {
     book.print();
     return os;
 }
 
-// ========== 派生类GeneralBook实现 ==========
+// ***************派生类GeneralBook实现****************
 GeneralBook::GeneralBook() : pageNum(0) {}
 
 void GeneralBook::initGeneralBook(const std::string& n, const std::string& id, const std::string& pub, double p, int total, int pg)
@@ -86,7 +86,7 @@ void GeneralBook::print() const {
     std::cout << "Pages: " << pageNum << std::endl;
 }
 
-// ========== 派生类Magazine实现 ==========
+// ****************派生类Magazine实现*******************
 Magazine::Magazine() {}
 
 void Magazine::initMagazine(const std::string& n, const std::string& id, const std::string& pub, double p, int total, const std::string& iss)
@@ -105,7 +105,7 @@ void Magazine::print() const {
     std::cout << "Issue: " << issue << std::endl;
 }
 
-// ========== 派生类EBook实现 ==========
+// ****************派生类EBook实现*******************
 EBook::EBook() : fileSize(0) {}
 
 void EBook::initEBook(const std::string& n, const std::string& id, const std::string& pub, double p, int total, double fs, const std::string& fmt)
