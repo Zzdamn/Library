@@ -1,19 +1,22 @@
-#pragma execution_character_set("utf-8")
 #include <iostream>
 #include <string>
 #include "Book.h"
 #include "Student.h"
+#include "Teacher.h"
 #include "Library.h"
 
 using namespace std;
 
 int main()
 {
+    system("chcp 65001 > nul");
     Library lib;
     Student stu;
+    Teacher tea;
     stu.initStudent("2025001", "Zhang San", "Computer Science", 3);
+    tea.initTeacher("T2025001", "Li Teacher", "Computer Science");
 
-    // 基类指针指向子类对象，多态的基础
+    // Ԥ�ò�������
     GeneralBook* b1 = new GeneralBook();
     b1->initGeneralBook("C++ Programming Basics", "1001", "PT Press", 49.5, 5, 514);
     lib.addResource(b1);
@@ -26,15 +29,21 @@ int main()
     e1->initEBook("Data Structures (eBook)", "3001", "Higher Education Press", 20, 10, 15.6, "PDF");
     lib.addResource(e1);
 
-    // ===== 实验四 多态效果演示 =====
-    cout << "===== Polymorphism Demo =====" << endl;
-    // 1. 基类指针调用虚函数
-    Book* ptr = b1;
-    ptr->print();
+    // ===== ���컯Ч����ʾ =====
+    cout << "===== 1. Return Policy Difference Demo =====" << endl;
+    stu.borrowBook(b1);
+    stu.borrowBook(m1);
+    stu.borrowBook(e1);
+    cout << "\n--- Start returning ---" << endl;
+    stu.returnBook(b1);
     cout << endl;
-    // 2. 基类引用+运算符重载多态
-    cout << *m1 << endl;
-    cout << *e1 << endl;
+    stu.returnBook(m1);
+    cout << endl;
+    stu.returnBook(e1);
+
+    cout << "\n===== 2. User Identity Difference Demo =====" << endl;
+    cout << "Student max borrow: 3 items | Teacher max borrow: 10 items" << endl;
+    cout << "Student uses standard channel | Teacher uses exclusive channel" << endl;
 
     int choice;
     while (true)
@@ -49,6 +58,9 @@ int main()
         cout << "7. Student borrow resource" << endl;
         cout << "8. Student return resource" << endl;
         cout << "9. Show student borrowing info" << endl;
+        cout << "10. Teacher borrow resource" << endl;
+        cout << "11. Teacher return resource" << endl;
+        cout << "12. Show teacher borrowing info" << endl;
         cout << "0. Exit" << endl;
         cout << "Please enter option: ";
         cin >> choice;
@@ -140,6 +152,24 @@ int main()
 
         case 9:
             stu.showStudentInfo();
+            break;
+
+        case 10:
+            cout << "Enter ISBN to borrow: "; cin >> isbn;
+            res = lib.findResource(isbn);
+            if (res) tea.borrowBook(res);
+            else cout << "Resource not found!" << endl;
+            break;
+
+        case 11:
+            cout << "Enter ISBN to return: "; cin >> isbn;
+            res = lib.findResource(isbn);
+            if (res) tea.returnBook(res);
+            else cout << "Resource not found!" << endl;
+            break;
+
+        case 12:
+            tea.showStudentInfo();
             break;
 
         default:

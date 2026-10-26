@@ -1,9 +1,8 @@
-#pragma execution_character_set("utf-8")
 #include "Book.h"
+#include <iostream>
 
-// *******************基类Book实现*******************
+// ========== 基类Book实现 ==========
 Book::Book() : totalCount(0), availableCount(0) {}
-
 Book::~Book() {}
 
 void Book::initData(const std::string& n, const std::string& id, const std::string& pub, double p, int total)
@@ -18,10 +17,7 @@ void Book::initData(const std::string& n, const std::string& id, const std::stri
 
 std::string Book::getIsbn() const { return isbn; }
 std::string Book::getBookName() const { return bookName; }
-
-bool Book::getStatus() const {
-    return availableCount > 0;
-}
+bool Book::getStatus() const { return availableCount > 0; }
 
 void Book::addCount(int num) {
     totalCount += num;
@@ -41,6 +37,7 @@ bool Book::borrowOne() {
     return true;
 }
 
+// 基类默认归还逻辑
 void Book::returnOne() {
     if (availableCount < totalCount)
         availableCount++;
@@ -50,7 +47,6 @@ bool Book::verifyIsbn() const {
     return !isbn.empty();
 }
 
-// 新增：基类公共信息打印，子类复用
 void Book::printBaseInfo() const {
     std::cout << "Type: " << getType() << std::endl;
     std::cout << "Title: " << bookName << std::endl;
@@ -60,14 +56,13 @@ void Book::printBaseInfo() const {
     std::cout << "Total copies: " << totalCount << ", Available: " << availableCount << std::endl;
 }
 
-// *******************实验四：运算符重载（基类引用调用虚函数，运行时多态）*******************
 std::ostream& operator<<(std::ostream& os, const Book& book)
 {
     book.print();
     return os;
 }
 
-// ***************派生类GeneralBook实现****************
+// ========== 派生类GeneralBook ==========
 GeneralBook::GeneralBook() : pageNum(0) {}
 
 void GeneralBook::initGeneralBook(const std::string& n, const std::string& id, const std::string& pub, double p, int total, int pg)
@@ -86,7 +81,13 @@ void GeneralBook::print() const {
     std::cout << "Pages: " << pageNum << std::endl;
 }
 
-// ****************派生类Magazine实现*******************
+// 普通图书归还
+void GeneralBook::returnOne() {
+    Book::returnOne();
+    std::cout << "  >> Physical book: condition checked, shelved to corresponding area." << std::endl;
+}
+
+// ========== 派生类Magazine ==========
 Magazine::Magazine() {}
 
 void Magazine::initMagazine(const std::string& n, const std::string& id, const std::string& pub, double p, int total, const std::string& iss)
@@ -105,7 +106,12 @@ void Magazine::print() const {
     std::cout << "Issue: " << issue << std::endl;
 }
 
-// ****************派生类EBook实现*******************
+// 杂志归还
+void Magazine::returnOne() {
+    Book::returnOne();
+    std::cout << "  >> Magazine: returned to periodical reading area, sorted by issue." << std::endl;
+}
+// ========== 派生类EBook ==========
 EBook::EBook() : fileSize(0) {}
 
 void EBook::initEBook(const std::string& n, const std::string& id, const std::string& pub, double p, int total, double fs, const std::string& fmt)
@@ -124,4 +130,10 @@ void EBook::print() const {
     printBaseInfo();
     std::cout << "File size: " << fileSize << " MB" << std::endl;
     std::cout << "Format: " << format << std::endl;
+}
+
+// 电子书归还
+void EBook::returnOne() {
+    Book::returnOne();
+    std::cout << "  >> E-resource: access revoked, available for next borrow immediately." << std::endl;
 }

@@ -3,24 +3,22 @@
 #include <iostream>
 #include <string>
 
-// 抽象基类：Book（类名、所有原有成员变量/函数名100%保留）
+// 抽象基类：Book
 class Book {
 protected:
-    std::string bookName;    // 原有变量保留
+    std::string bookName;
     std::string isbn;
     std::string publisher;
     double price;
     int totalCount;
     int availableCount;
-
-    // 新增：封装公共信息打印，供子类复用
     void printBaseInfo() const;
 
 public:
     Book();
-    virtual ~Book(); // 虚析构函数，实验四核心：delete基类指针时完整释放子类对象
+    virtual ~Book();
 
-    // 原有普通函数全部保留，接口不变
+    // 原有函数全部保留，接口不变
     void initData(const std::string& n, const std::string& id, const std::string& pub, double p, int total);
     std::string getIsbn() const;
     std::string getBookName() const;
@@ -28,18 +26,18 @@ public:
     void addCount(int num);
     bool reduceCount(int num);
     bool borrowOne();
-    void returnOne();
+    virtual void returnOne(); // 修改点：改为虚函数，子类重写实现差异化归还
+
     bool verifyIsbn() const;
 
-    // ===== 实验四 虚函数多态核心 =====
-    virtual void print() const = 0;       // 纯虚函数，Book成为抽象类，子类必须重写
-    virtual std::string getType() const = 0; // 纯虚函数：返回资源类型，统一接口
+    // 纯虚函数，多态核心
+    virtual void print() const = 0;
+    virtual std::string getType() const = 0;
 
-    // 实验四 运算符重载多态（友元声明）
     friend std::ostream& operator<<(std::ostream& os, const Book& book);
 };
 
-// 派生类1：普通图书（类名、原有变量完全保留）
+// 派生类1：普通图书
 class GeneralBook : public Book {
 private:
     int pageNum;
@@ -48,6 +46,7 @@ public:
     void initGeneralBook(const std::string& n, const std::string& id, const std::string& pub, double p, int total, int pg);
     void print() const override;
     std::string getType() const override;
+    void returnOne() override; // 新增：重写归还逻辑
 };
 
 // 派生类2：杂志
@@ -59,6 +58,7 @@ public:
     void initMagazine(const std::string& n, const std::string& id, const std::string& pub, double p, int total, const std::string& iss);
     void print() const override;
     std::string getType() const override;
+    void returnOne() override; // 新增：重写归还逻辑
 };
 
 // 派生类3：电子资源
@@ -71,6 +71,7 @@ public:
     void initEBook(const std::string& n, const std::string& id, const std::string& pub, double p, int total, double fs, const std::string& fmt);
     void print() const override;
     std::string getType() const override;
+    void returnOne() override; // 新增：重写归还逻辑
 };
 
 #endif
