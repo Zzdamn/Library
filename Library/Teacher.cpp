@@ -19,19 +19,19 @@ void Teacher::initTeacher(const std::string& id, const std::string& name, const 
 bool Teacher::borrowBook(Book* book) {
     if (!book->getStatus())
     {
-        std::cout << "[Teacher Channel] Borrow failed: resource not available." << std::endl;
+        std::cout << "[教师通道] Borrow failed: resource not available." << std::endl;// 璧勬簮涓嶅彲鍊?
         return false;
     }
     if (borrowCount >= maxBorrow)
     {
-        std::cout << "[Teacher Channel] Borrow failed: reached teacher borrow limit." << std::endl;
+        std::cout << "[教师通道] Borrow failed: reached teacher borrow limit." << std::endl;// 杈惧埌鏁欏笀鏈�澶у�熼槄閲?
         return false;
     }
 
     borrowBooks[borrowCount] = book;
     borrowCount++;
     book->borrowOne();
-    std::cout << "[Teacher Channel] Borrow success: " << book->getBookName() << std::endl;
+    std::cout << "[教师通道] Borrow success: " << book->getBookName() << std::endl;// 鍊熼槄鎴愬姛
     return true;
 }
 
@@ -45,10 +45,10 @@ bool Teacher::returnBook(Book* book) {
                 borrowBooks[j] = borrowBooks[j + 1];
             borrowBooks[borrowCount - 1] = nullptr;
             borrowCount--;
-            std::cout << "[Teacher Channel] Return success: " << book->getBookName() << std::endl;
+            std::cout << "[教师通道] Return success: " << book->getBookName() << std::endl;// 褰掕繕鎴愬姛
             return true;
         }
     }
-    std::cout << "[Teacher Channel] Return failed: you did not borrow this resource." << std::endl;
+    std::cout << "[教师通道] Return failed: you did not borrow this resource." << std::endl;// 褰掕繕澶辫触锛屾湭鍊熼槄璇ヨ祫婧?
     return false;
 }

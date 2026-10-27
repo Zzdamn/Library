@@ -21,19 +21,19 @@ bool Student::borrowBook(Book* book)
 {
     if (!book->getStatus())
     {
-        std::cout << "[学生通道] Borrow failed: resource not available!" << std::endl;
+        std::cout << "[学生通道] Borrow failed: resource not available!" << std::endl;// 资源不可借
         return false;
     }
     if (borrowCount >= maxBorrow)
     {
-        std::cout << "[学生通道] Borrow failed: reached max borrow limit!" << std::endl;
+        std::cout << "[学生通道] Borrow failed: reached max borrow limit!" << std::endl;// 达到最大借阅量
         return false;
     }
 
     borrowBooks[borrowCount] = book;
     borrowCount++;
     book->borrowOne();
-    std::cout << "[学生通道] Borrow success! Title: " << book->getBookName() << std::endl;
+    std::cout << "[学生通道] Borrow success! Title: " << book->getBookName() << std::endl;// 借阅成功
     return true;
 }
 
@@ -48,24 +48,24 @@ bool Student::returnBook(Book* book)
                 borrowBooks[j] = borrowBooks[j + 1];
             borrowBooks[borrowCount - 1] = nullptr;
             borrowCount--;
-            std::cout << "[学生通道] Return success! Title: " << book->getBookName() << std::endl;
+            std::cout << "[学生通道] Return success! Title: " << book->getBookName() << std::endl;// 归还成功
             return true;
         }
     }
-    std::cout << "[学生通道] Return failed: you didn't borrow this resource." << std::endl;
+    std::cout << "[学生通道] Return failed: you didn't borrow this resource." << std::endl;// 归还失败，未借阅该资源
     return false;
 }
 
 void Student::showStudentInfo()
 {
-    std::cout << "\n===== User Info =====" << std::endl;
-    std::cout << "Identity: Student" << std::endl;
+    std::cout << "\n===== User Info =====" << std::endl;// 用户信息
+    std::cout << "Identity: Student" << std::endl;// 身份：学生
     std::cout << "ID: " << stuId << std::endl;
     std::cout << "Name: " << stuName << std::endl;
-    std::cout << "Department: " << department << std::endl;
-    std::cout << "Max Borrow: " << maxBorrow << " items" << std::endl;
-    std::cout << "Currently Borrowed: " << borrowCount << " items" << std::endl;
-    std::cout << "Borrowed list:" << std::endl;
+    std::cout << "Department: " << department << std::endl;// 系别
+    std::cout << "Max Borrow: " << maxBorrow << " items" << std::endl;// 最大借阅量
+    std::cout << "Currently Borrowed: " << borrowCount << " items" << std::endl;// 当前借阅量
+    std::cout << "Borrowed list:" << std::endl;// 借阅清单
     for (int i = 0; i < borrowCount; i++)
     {
         std::cout << "  " << borrowBooks[i]->getBookName() << " | ISBN: " << borrowBooks[i]->getIsbn() << std::endl;
