@@ -2,7 +2,7 @@
 #define LIBRARY_H
 #include <vector>
 #include <string>
-#include <fstream>   // 实验六：文件流头文件
+#include <fstream> 
 #include "Book.h"
 
 class Library {
@@ -19,7 +19,7 @@ public:
     bool reduceResourceCount(const std::string& isbn, int num);
     bool deleteResource(const std::string& isbn);
 
-    // ==========文件持久化函数 ==========
+    //文件持久化函数
     void saveToFile(const std::string& filename);   // 保存所有资源到文件
     void loadFromFile(const std::string& filename); // 从文件加载所有资源
 };

@@ -19,7 +19,7 @@ std::string Book::getIsbn() const { return isbn; }
 std::string Book::getBookName() const { return bookName; }
 bool Book::getStatus() const { return availableCount > 0; }
 
-// 新增：持久化 getter 实现
+// 持久化 getter 实现
 std::string Book::getPublisher() const { return publisher; }
 double Book::getPrice() const { return price; }
 int Book::getTotalCount() const { return totalCount; }
@@ -93,7 +93,7 @@ void GeneralBook::returnOne() {
     std::cout << "  >> Physical book: condition checked, shelved to corresponding area." << std::endl;
 }
 
-// 新增：子类 getter 实现
+// 子类 getter 实现
 int GeneralBook::getPageNum() const { return pageNum; }
 
 // ========== 派生类Magazine ==========
@@ -121,7 +121,7 @@ void Magazine::returnOne() {
     std::cout << "  >> Magazine: returned to periodical reading area, sorted by issue." << std::endl;
 }
 
-// 新增：子类 getter 实现
+// 子类 getter 实现
 std::string Magazine::getIssue() const { return issue; }
 
 // ========== 派生类EBook ==========
@@ -151,6 +151,6 @@ void EBook::returnOne() {
     std::cout << "  >> E-resource: access revoked, available for next borrow immediately." << std::endl;
 }
 
-// 新增：子类 getter 实现
+// 子类 getter 实现
 double EBook::getFileSize() const { return fileSize; }
 std::string EBook::getFormat() const { return format; }

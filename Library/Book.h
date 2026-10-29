@@ -23,12 +23,9 @@ public:
     std::string getBookName() const;
     bool getStatus() const;
 
-    // 实验六新增：持久化所需的getter
+    // 持久化所需的getter
     std::string getPublisher() const;
     double getPrice() const;
-    // Implementation in Book.cpp
-
-    // Implementation in Book.cpp or derived class
 
     int getTotalCount() const;
     int getAvailableCount() const;
@@ -56,7 +53,7 @@ public:
     void print() const override;
     std::string getType() const override;
     void returnOne() override;
-    int getPageNum() const; // 实验六新增
+    int getPageNum() const; 
 };
 
 // 派生类2：杂志
@@ -69,7 +66,7 @@ public:
     void print() const override;
     std::string getType() const override;
     void returnOne() override;
-    std::string getIssue() const; // 实验六新增
+    std::string getIssue() const; 
 };
 
 // 派生类3：电子资源
@@ -83,8 +80,8 @@ public:
     void print() const override;
     std::string getType() const override;
     void returnOne() override;
-    double getFileSize() const;  // 实验六新增
-    std::string getFormat() const; // 实验六新增
+    double getFileSize() const;  
+    std::string getFormat() const; 
 };
 
 #endif

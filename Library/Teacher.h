@@ -2,7 +2,6 @@
 #define TEACHER_H
 #include "Student.h"
 
-// 教师类：公有继承学生基类，重写借阅/归还逻辑，实现用户身份差异化
 class Teacher : public Student {
 public:
     Teacher();

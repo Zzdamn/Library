@@ -81,7 +81,7 @@ bool Library::deleteResource(const std::string& isbn) {
     return false;
 }
 
-// 实验六：保存数据到文件
+// 保存数据到文件
 void Library::saveToFile(const std::string& filename) {
     std::cout << "Saving data to: " << std::filesystem::absolute(filename) << std::endl;
     std::ofstream outFile(filename);
@@ -123,7 +123,7 @@ void Library::saveToFile(const std::string& filename) {
     std::cout << "Data saved to file successfully." << std::endl;
 }
 
-// 实验六：从文件加载数据
+// 从文件加载数据
 void Library::loadFromFile(const std::string& filename) {
     std::ifstream inFile(filename);
     if (!inFile.is_open()) {
