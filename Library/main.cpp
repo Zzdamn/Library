@@ -16,6 +16,23 @@ int main()
     stu.initStudent("2025001", "Zhang San", "Computer Science", 3);// 学生最大借阅量3本
     tea.initTeacher("T2025001", "Li Teacher", "Computer Science");// 教师最大借阅量10本
 
+    // 实验六：启动时先加载文件数据
+    lib.loadFromFile("library_data.txt");
+
+    // 如果加载失败（文件不存在），再使用预置数据
+    if (lib.findResource("1001") == nullptr) {
+        GeneralBook* b1 = new GeneralBook();
+        b1->initGeneralBook("C++ Programming Basics", "1001", "PT Press", 49.5, 5, 514);
+        lib.addResource(b1);
+
+        Magazine* m1 = new Magazine();
+        m1->initMagazine("Computer Journal", "2001", "CS Society", 30, 3, "2024 Issue 10");
+        lib.addResource(m1);
+
+        EBook* e1 = new EBook();
+        e1->initEBook("Data Structures (eBook)", "3001", "Higher Education Press", 20, 10, 15.6, "PDF");
+        lib.addResource(e1);
+    }
     // 预置测试数据
     GeneralBook* b1 = new GeneralBook();
     b1->initGeneralBook("C++ Programming Basics", "1001", "PT Press", 49.5, 5, 514);
@@ -48,9 +65,7 @@ int main()
     cout << endl;
     tea.returnBook(e1);// 归还电子资源
 
-    cout << "\nStudent max borrow: 3 items | Teacher max borrow: 10 items" << endl;
-    cout << "Student uses standard channel | Teacher uses exclusive channel" << endl;
-    cout << "Student max borrow: 3 items | Teacher max borrow: 10 items" << endl;// 学生最大借阅量3本，教师最大借阅量10本
+    cout << "\nStudent max borrow: 3 items | Teacher max borrow: 10 item" << endl;// 学生最大借阅量3本，教师最大借阅量10本
     cout << "Student uses standard channel | Teacher uses exclusive channel" << endl;// 学生使用标准通道，教师使用专属通道
 
     int choice;
@@ -184,6 +199,7 @@ int main()
             cout << "Invalid input, please choose again!" << endl;// 输入无效，请重新选
         }
     }
+    lib.saveToFile("library_data.txt");
 
     cout << "System exited." << endl;// 系统已退出
     return 0;

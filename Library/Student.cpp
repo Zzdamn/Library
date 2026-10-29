@@ -1,12 +1,12 @@
 #include "Student.h"
 
 // ========== Student基类实现 ==========
-Student::Student() : borrowCount(0), maxBorrow(3) {
-    for (int i = 0; i < MAX_BORROW; i++)
-        borrowBooks[i] = nullptr;
-}
+Student::Student() : maxBorrow(3) {}
 
-Student::~Student() {}
+Student::~Student() {
+    // 实验五：vector会自动释放内存，仅清空容器，不释放Book对象（依赖关系，生命周期由Library管理）
+    borrowBooks.clear();
+}
 
 void Student::initStudent(const std::string& id, const std::string& name, const std::string& dep, int maxBor)
 {
@@ -14,60 +14,61 @@ void Student::initStudent(const std::string& id, const std::string& name, const 
     stuName = name;
     department = dep;
     maxBorrow = maxBor;
-    borrowCount = 0;
+    borrowBooks.clear(); // 实验五：清空vector，重置借阅记录
 }
 
 bool Student::borrowBook(Book* book)
 {
     if (!book->getStatus())
     {
-        std::cout << "[学生通道] Borrow failed: resource not available!" << std::endl;// 资源不可借
+        std::cout << "[学生通道] Borrow failed: resource not available!" << std::endl;
         return false;
     }
-    if (borrowCount >= maxBorrow)
+    // 实验五：用vector的size()获取当前借阅数量
+    if (borrowBooks.size() >= maxBorrow)
     {
-        std::cout << "[学生通道] Borrow failed: reached max borrow limit!" << std::endl;// 达到最大借阅量
+        std::cout << "[学生通道] Borrow failed: reached max borrow limit!" << std::endl;
         return false;
     }
 
-    borrowBooks[borrowCount] = book;
-    borrowCount++;
+    // 实验五：push_back将元素加入vector末尾，替代数组下标赋值
+    borrowBooks.push_back(book);
     book->borrowOne();
-    std::cout << "[学生通道] Borrow success! Title: " << book->getBookName() << std::endl;// 借阅成功
+    std::cout << "[学生通道] Borrow success! Title: " << book->getBookName() << std::endl;
     return true;
 }
 
 bool Student::returnBook(Book* book)
 {
-    for (int i = 0; i < borrowCount; i++)
+    // 实验五：使用迭代器遍历vector，对应begin()、end()、erase()函数
+    for (auto it = borrowBooks.begin(); it != borrowBooks.end(); ++it)
     {
-        if (borrowBooks[i]->getIsbn() == book->getIsbn())
+        if ((*it)->getIsbn() == book->getIsbn())
         {
             book->returnOne();
-            for (int j = i; j < borrowCount - 1; j++)
-                borrowBooks[j] = borrowBooks[j + 1];
-            borrowBooks[borrowCount - 1] = nullptr;
-            borrowCount--;
-            std::cout << "[学生通道] Return success! Title: " << book->getBookName() << std::endl;// 归还成功
+            // 实验五：erase删除指定迭代器位置的元素
+            borrowBooks.erase(it);
+            std::cout << "[学生通道] Return success! Title: " << book->getBookName() << std::endl;
             return true;
         }
     }
-    std::cout << "[学生通道] Return failed: you didn't borrow this resource." << std::endl;// 归还失败，未借阅该资源
+    std::cout << "[学生通道] Return failed: you didn't borrow this resource." << std::endl;
     return false;
 }
 
 void Student::showStudentInfo()
 {
-    std::cout << "\n===== User Info =====" << std::endl;// 用户信息
-    std::cout << "Identity: Student" << std::endl;// 身份：学生
+    std::cout << "\n===== User Info =====" << std::endl;
+    std::cout << "Identity: Student" << std::endl;
     std::cout << "ID: " << stuId << std::endl;
     std::cout << "Name: " << stuName << std::endl;
-    std::cout << "Department: " << department << std::endl;// 系别
-    std::cout << "Max Borrow: " << maxBorrow << " items" << std::endl;// 最大借阅量
-    std::cout << "Currently Borrowed: " << borrowCount << " items" << std::endl;// 当前借阅量
-    std::cout << "Borrowed list:" << std::endl;// 借阅清单
-    for (int i = 0; i < borrowCount; i++)
+    std::cout << "Department: " << department << std::endl;
+    std::cout << "Max Borrow: " << maxBorrow << " items" << std::endl;
+    // 实验五：size()返回当前元素个数
+    std::cout << "Currently Borrowed: " << borrowBooks.size() << " items" << std::endl;
+    std::cout << "Borrowed list:" << std::endl;
+    for (auto& b : borrowBooks)
     {
-        std::cout << "  " << borrowBooks[i]->getBookName() << " | ISBN: " << borrowBooks[i]->getIsbn() << std::endl;
+        std::cout << "  " << b->getBookName() << " | ISBN: " << b->getIsbn() << std::endl;
     }
 }

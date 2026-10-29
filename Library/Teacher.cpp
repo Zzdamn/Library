@@ -3,9 +3,6 @@
 
 Teacher::Teacher() {
     maxBorrow = 10;
-    borrowCount = 0;
-    for (int i = 0; i < MAX_BORROW; i++)
-        borrowBooks[i] = nullptr;
 }
 
 void Teacher::initTeacher(const std::string& id, const std::string& name, const std::string& dep) {
@@ -13,42 +10,38 @@ void Teacher::initTeacher(const std::string& id, const std::string& name, const 
     stuName = name;
     department = dep;
     maxBorrow = 10;
-    borrowCount = 0;
+    borrowBooks.clear();
 }
 
 bool Teacher::borrowBook(Book* book) {
     if (!book->getStatus())
     {
-        std::cout << "[教师通道] Borrow failed: resource not available." << std::endl;// 资源不可借
+        std::cout << "[教师通道] Borrow failed: resource not available." << std::endl;
         return false;
     }
-    if (borrowCount >= maxBorrow)
+    if (borrowBooks.size() >= maxBorrow)
     {
-        std::cout << "[教师通道] Borrow failed: reached teacher borrow limit." << std::endl;// 超过教师借阅上限
+        std::cout << "[教师通道] Borrow failed: reached teacher borrow limit." << std::endl;
         return false;
     }
 
-    borrowBooks[borrowCount] = book;
-    borrowCount++;
+    borrowBooks.push_back(book);
     book->borrowOne();
-    std::cout << "[教师通道] Borrow success: " << book->getBookName() << std::endl;// 借阅成功
+    std::cout << "[教师通道] Borrow success: " << book->getBookName() << std::endl;
     return true;
 }
 
 bool Teacher::returnBook(Book* book) {
-    for (int i = 0; i < borrowCount; i++)
+    for (auto it = borrowBooks.begin(); it != borrowBooks.end(); ++it)
     {
-        if (borrowBooks[i]->getIsbn() == book->getIsbn())
+        if ((*it)->getIsbn() == book->getIsbn())
         {
             book->returnOne();
-            for (int j = i; j < borrowCount - 1; j++)
-                borrowBooks[j] = borrowBooks[j + 1];
-            borrowBooks[borrowCount - 1] = nullptr;
-            borrowCount--;
-            std::cout << "[教师通道] Return success: " << book->getBookName() << std::endl;// 归还成功
+            borrowBooks.erase(it);
+            std::cout << "[教师通道] Return success: " << book->getBookName() << std::endl;
             return true;
         }
     }
-    std::cout << "[教师通道] Return failed: you did not borrow this resource." << std::endl;// 归还失败，未找到该资源
+    std::cout << "[教师通道] Return failed: you did not borrow this resource." << std::endl;
     return false;
 }

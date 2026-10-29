@@ -19,6 +19,12 @@ std::string Book::getIsbn() const { return isbn; }
 std::string Book::getBookName() const { return bookName; }
 bool Book::getStatus() const { return availableCount > 0; }
 
+// 新增：持久化 getter 实现
+std::string Book::getPublisher() const { return publisher; }
+double Book::getPrice() const { return price; }
+int Book::getTotalCount() const { return totalCount; }
+int Book::getAvailableCount() const { return availableCount; }
+
 void Book::addCount(int num) {
     totalCount += num;
     availableCount += num;
@@ -48,12 +54,12 @@ bool Book::verifyIsbn() const {
 }
 
 void Book::printBaseInfo() const {
-    std::cout << "Type: " << getType() << std::endl;//多态调用，输出实际类型
-    std::cout << "Title: " << bookName << std::endl;//书名
-    std::cout << "ISBN: " << isbn << std::endl;//ISBN
-    std::cout << "Publisher: " << publisher << std::endl;//出版社
-    std::cout << "Price: " << price << " CNY" << std::endl;//价格
-    std::cout << "Total copies: " << totalCount << ", Available: " << availableCount << std::endl;//总数: ，可借:
+    std::cout << "Type: " << getType() << std::endl;
+    std::cout << "Title: " << bookName << std::endl;
+    std::cout << "ISBN: " << isbn << std::endl;
+    std::cout << "Publisher: " << publisher << std::endl;
+    std::cout << "Price: " << price << " CNY" << std::endl;
+    std::cout << "Total copies: " << totalCount << ", Available: " << availableCount << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& os, const Book& book)
@@ -84,8 +90,11 @@ void GeneralBook::print() const {
 // 普通图书归还
 void GeneralBook::returnOne() {
     Book::returnOne();
-    std::cout << "  >> Physical book: condition checked, shelved to corresponding area." << std::endl;// 物理书籍归还，检查状态后归还到对应区域
+    std::cout << "  >> Physical book: condition checked, shelved to corresponding area." << std::endl;
 }
+
+// 新增：子类 getter 实现
+int GeneralBook::getPageNum() const { return pageNum; }
 
 // ========== 派生类Magazine ==========
 Magazine::Magazine() {}
@@ -97,20 +106,24 @@ void Magazine::initMagazine(const std::string& n, const std::string& id, const s
 }
 
 std::string Magazine::getType() const {
-    return "Magazine";//期刊
+    return "Magazine";
 }
 
 void Magazine::print() const {
-    std::cout << "===== Magazine =====" << std::endl;//期刊
+    std::cout << "===== Magazine =====" << std::endl;
     printBaseInfo();
-    std::cout << "Issue: " << issue << std::endl;//期号
+    std::cout << "Issue: " << issue << std::endl;
 }
 
 // 杂志归还
 void Magazine::returnOne() {
     Book::returnOne();
-    std::cout << "  >> Magazine: returned to periodical reading area, sorted by issue." << std::endl;// 期刊归还，归还到期刊阅览区，按期号排序
+    std::cout << "  >> Magazine: returned to periodical reading area, sorted by issue." << std::endl;
 }
+
+// 新增：子类 getter 实现
+std::string Magazine::getIssue() const { return issue; }
+
 // ========== 派生类EBook ==========
 EBook::EBook() : fileSize(0) {}
 
@@ -135,5 +148,9 @@ void EBook::print() const {
 // 电子书归还
 void EBook::returnOne() {
     Book::returnOne();
-    std::cout << "  >> E-resource: access revoked, available for next borrow immediately." << std::endl;// 电子资源归还，撤销访问权限，可立即供下一位借阅
+    std::cout << "  >> E-resource: access revoked, available for next borrow immediately." << std::endl;
 }
+
+// 新增：子类 getter 实现
+double EBook::getFileSize() const { return fileSize; }
+std::string EBook::getFormat() const { return format; }

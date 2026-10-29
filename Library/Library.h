@@ -2,21 +2,26 @@
 #define LIBRARY_H
 #include <vector>
 #include <string>
+#include <fstream>   // 实验六：文件流头文件
 #include "Book.h"
 
 class Library {
 private:
-    std::vector<Book*> resourceList; // STL容器，存储基类指针，支持多态
+    std::vector<Book*> resourceList;
 public:
-    ~Library(); // 析构释放所有new的对象
+    ~Library();
 
-    void addResource(Book* res);       // 1. 增加新资源
-    bool addResourceCount(const std::string& isbn, int num); // 2. 增加已有资源数量
-    Book* findResource(const std::string& isbn); // 查找资源
-    void showResource(const std::string& isbn); // 3. 显示单个资源
-    void showAllResources();           // 4. 显示所有资源
-    bool reduceResourceCount(const std::string& isbn, int num); // 5. 减少资源数量
-    bool deleteResource(const std::string& isbn); // 6. 删除资源
+    void addResource(Book* res);
+    bool addResourceCount(const std::string& isbn, int num);
+    Book* findResource(const std::string& isbn);
+    void showResource(const std::string& isbn);
+    void showAllResources();
+    bool reduceResourceCount(const std::string& isbn, int num);
+    bool deleteResource(const std::string& isbn);
+
+    // ==========文件持久化函数 ==========
+    void saveToFile(const std::string& filename);   // 保存所有资源到文件
+    void loadFromFile(const std::string& filename); // 从文件加载所有资源
 };
 
 #endif

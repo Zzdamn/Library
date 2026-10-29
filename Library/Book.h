@@ -18,16 +18,25 @@ public:
     Book();
     virtual ~Book();
 
-    // 原有函数全部保留，接口不变
     void initData(const std::string& n, const std::string& id, const std::string& pub, double p, int total);
     std::string getIsbn() const;
     std::string getBookName() const;
     bool getStatus() const;
+
+    // 实验六新增：持久化所需的getter
+    std::string getPublisher() const;
+    double getPrice() const;
+    // Implementation in Book.cpp
+
+    // Implementation in Book.cpp or derived class
+
+    int getTotalCount() const;
+    int getAvailableCount() const;
+
     void addCount(int num);
     bool reduceCount(int num);
     bool borrowOne();
-    virtual void returnOne(); // 修改点：改为虚函数，子类重写实现差异化归还
-
+    virtual void returnOne();
     bool verifyIsbn() const;
 
     // 纯虚函数，多态核心
@@ -46,7 +55,8 @@ public:
     void initGeneralBook(const std::string& n, const std::string& id, const std::string& pub, double p, int total, int pg);
     void print() const override;
     std::string getType() const override;
-    void returnOne() override; // 新增：重写归还逻辑
+    void returnOne() override;
+    int getPageNum() const; // 实验六新增
 };
 
 // 派生类2：杂志
@@ -58,7 +68,8 @@ public:
     void initMagazine(const std::string& n, const std::string& id, const std::string& pub, double p, int total, const std::string& iss);
     void print() const override;
     std::string getType() const override;
-    void returnOne() override; // 新增：重写归还逻辑
+    void returnOne() override;
+    std::string getIssue() const; // 实验六新增
 };
 
 // 派生类3：电子资源
@@ -71,7 +82,9 @@ public:
     void initEBook(const std::string& n, const std::string& id, const std::string& pub, double p, int total, double fs, const std::string& fmt);
     void print() const override;
     std::string getType() const override;
-    void returnOne() override; // 新增：重写归还逻辑
+    void returnOne() override;
+    double getFileSize() const;  // 实验六新增
+    std::string getFormat() const; // 实验六新增
 };
 
 #endif
